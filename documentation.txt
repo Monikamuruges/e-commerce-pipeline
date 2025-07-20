@@ -1,0 +1,72 @@
+***Step 1: Create Project Directory***
+mkdir ecommerce-site
+cd ecommerce-site
+
+***Create a basic index.html:***
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+  <head><title>My E-commerce</title></head>
+  <body>
+    <h1>Hello from Jenkins!</h1>
+  </body>
+</html>
+
+***Step 2: Initialize Git and Push to GitHub***
+Initialize Git:
+git init
+git remote add origin https://github.com/your-username/ecommerce-site.git
+git add .
+git commit -m "Initial commit"
+git push -u origin main
+
+***start Jenkins**
+service jenkins start
+
+Create New Jenkins Job
+---------------------
+
+Click "New Item".
+
+Enter job name like ecommerce-ci.
+
+Select Freestyle project ➝ Click OK.
+
+Configure Job:
+--------------
+Description: Optional.
+
+Source Code Management:
+
+Choose Git.
+
+Add your GitHub repo URL (https://github.com/your-username/ecommerce-site.git).
+
+Build Triggers:
+Check: "GitHub hook trigger for GITScm polling"
+
+Build Section:
+
+Add a step: Execute shell
+
+Example command:
+echo "Deploying site..."
+ls
+
+***Start Ngrok to Expose Jenkins***
+wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+unzip ngrok-stable-linux-amd64.zip
+To start :ngrok http 8080 //it open a page keep it open
+Copy the forwarding HTTPS URL in payload :Forwarding https://abcd1234.ngrok-free.app -> http://localhost:8080
+***Create GitHub Webhook***
+Go to your GitHub repo → Settings → Webhooks → Add Webhook
+
+Payload URL:https://abcd1234.ngrok-free.app/github-webhook/
+Content Type:
+application/json
+Events to trigger:
+Just the push event
+
+Save the webhook.
+
+***Finally update and push to trigger a build"
